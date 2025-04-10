@@ -69,6 +69,7 @@ class NewsletterController extends Controller
      */
     public function destroy(Newsletter $newsletter)
     {
+        $this->authorize('delete', $newsletter);
         $newsletter->delete();
 
         return response()->json(null, 204);

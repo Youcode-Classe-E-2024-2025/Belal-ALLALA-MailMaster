@@ -74,6 +74,7 @@ class CampaignController extends Controller
      */
     public function destroy(Campaign $campaign)
     {
+        $this->authorize('delete', $newsletter);
         $campaign->delete();
 
         return response()->json(null, 204);

@@ -13,7 +13,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        \App\Models\Newsletter::class => \App\Policies\NewsletterPolicy::class, // Ajout de la policy pour Newsletter
+        \App\Models\Campaign::class => \App\Policies\CampaignPolicy::class,     // Ajout de la policy pour Campaign
     ];
 
     /**
@@ -21,6 +23,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
+
+        // Implicitly grant "Super Admin" role all permissions
+        // For example, User with role 'admin' can bypass all policies
+        \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
+            return $user->isAdmin() ? true : null; // Si l'utilisateur est admin, retourne true (autorisé), sinon continue la vérification avec les policies
+        });
     }
 }
