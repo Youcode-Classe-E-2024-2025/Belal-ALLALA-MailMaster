@@ -7,10 +7,42 @@ use App\Models\Subscriber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\Tag(
+ *     name="Subscribers",
+ *     description="Operations related to subscribers"
+ * )
+ */
 class SubscriberController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *      path="/api/subscribers",
+     *      operationId="getSubscribersList",
+     *      tags={"Subscribers"},
+     *      summary="Get list of subscribers",
+     *      description="Returns list of subscribers with pagination.",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/Subscriber")
+     *              ),
+     *              @OA\Property(property="links", ref="#/components/schemas/PaginationLinks"),
+     *              @OA\Property(property="meta", ref="#/components/schemas/PaginationMeta")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function index()
     {
@@ -19,7 +51,33 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *      path="/api/subscribers",
+     *      operationId="createSubscriber",
+     *      tags={"Subscribers"},
+     *      summary="Create a new subscriber",
+     *      description="Creates a new subscriber.",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Subscriber")
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Subscriber")
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(ref="#/components/schemas/ValidationError")
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function store(Request $request)
     {
@@ -38,7 +96,38 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *      path="/api/subscribers/{subscriber}",
+     *      operationId="getSubscriberById",
+     *      tags={"Subscribers"},
+     *      summary="Get subscriber information",
+     *      description="Returns subscriber data",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          name="subscriber",
+     *          description="Subscriber id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Subscriber")
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Resource Not Found"))
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function show(Subscriber $subscriber)
     {
@@ -46,7 +135,47 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *      path="/api/subscribers/{subscriber}",
+     *      operationId="updateSubscriber",
+     *      tags={"Subscribers"},
+     *      summary="Update existing subscriber",
+     *      description="Updates an existing subscriber",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          name="subscriber",
+     *          description="Subscriber id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Subscriber")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Subscriber")
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(ref="#/components/schemas/ValidationError")
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Resource Not Found"))
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function update(Request $request, Subscriber $subscriber)
     {
@@ -65,7 +194,37 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *      path="/api/subscribers/{subscriber}",
+     *      operationId="deleteSubscriber",
+     *      tags={"Subscribers"},
+     *      summary="Delete subscriber",
+     *      description="Deletes a subscriber record",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          name="subscriber",
+     *          description="Subscriber id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Resource Not Found"))
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function destroy(Subscriber $subscriber)
     {
