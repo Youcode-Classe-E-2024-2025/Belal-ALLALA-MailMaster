@@ -20,5 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('subscribers', SubscriberController::class);
-Route::apiResource('newsletters', NewsletterController::class);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('subscribers', SubscriberController::class);
+    Route::apiResource('newsletters', NewsletterController::class);
+});
