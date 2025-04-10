@@ -4,14 +4,46 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Campaign;
-use App\Models\Newsletter; // Assurez-vous d'importer le modèle Newsletter
+use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\Tag(
+ *     name="Campaigns",
+ *     description="Operations related to campaigns"
+ * )
+ */
 class CampaignController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *      path="/api/campaigns",
+     *      operationId="getCampaignsList",
+     *      tags={"Campaigns"},
+     *      summary="Get list of campaigns",
+     *      description="Returns list of campaigns with pagination.",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/Campaign")
+     *              ),
+     *              @OA\Property(property="links", ref="#/components/schemas/PaginationLinks"),
+     *              @OA\Property(property="meta", ref="#/components/schemas/PaginationMeta")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function index()
     {
@@ -20,15 +52,41 @@ class CampaignController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *      path="/api/campaigns",
+     *      operationId="createCampaign",
+     *      tags={"Campaigns"},
+     *      summary="Create a new campaign",
+     *      description="Creates a new campaign.",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Campaign")
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Campaign")
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(ref="#/components/schemas/ValidationError")
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'newsletter_id' => 'required|exists:newsletters,id', // Vérifie que newsletter_id existe dans la table newsletters
+            'newsletter_id' => 'required|exists:newsletters,id',
             'title' => 'required|string|max:255',
             'subject' => 'required|string|max:255',
-            'status' => 'in:draft,pending,sent,failed', // Validation pour le statut (enum)
+            'status' => 'in:draft,pending,sent,failed',
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +99,38 @@ class CampaignController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *      path="/api/campaigns/{campaign}",
+     *      operationId="getCampaignById",
+     *      tags={"Campaigns"},
+     *      summary="Get campaign information",
+     *      description="Returns campaign data",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          name="campaign",
+     *          description="Campaign id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Campaign")
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Resource Not Found"))
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function show(Campaign $campaign)
     {
@@ -49,15 +138,55 @@ class CampaignController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *      path="/api/campaigns/{campaign}",
+     *      operationId="updateCampaign",
+     *      tags={"Campaigns"},
+     *      summary="Update existing campaign",
+     *      description="Updates an existing campaign",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          name="campaign",
+     *          description="Campaign id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Campaign")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Campaign")
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validation error",
+     *          @OA\JsonContent(ref="#/components/schemas/ValidationError")
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Resource Not Found"))
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function update(Request $request, Campaign $campaign)
     {
         $validator = Validator::make($request->all(), [
-            'newsletter_id' => 'exists:newsletters,id', // Pas obligatoire à la mise à jour, mais doit exister si fourni
+            'newsletter_id' => 'exists:newsletters,id',
             'title' => 'string|max:255',
             'subject' => 'string|max:255',
-            'status' => 'in:draft,pending,sent,failed', // Validation pour le statut (enum)
+            'status' => 'in:draft,pending,sent,failed',
         ]);
 
         if ($validator->fails()) {
@@ -70,13 +199,48 @@ class CampaignController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *      path="/api/campaigns/{campaign}",
+     *      operationId="deleteCampaign",
+     *      tags={"Campaigns"},
+     *      summary="Delete campaign",
+     *      description="Deletes a campaign record",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          name="campaign",
+     *          description="Campaign id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Resource Not Found"))
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Forbidden"))
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
      */
     public function destroy(Campaign $campaign)
     {
-        $this->authorize('delete', $newsletter);
-        $campaign->delete();
+        $this->authorize('delete', $campaign);
 
+        $campaign->delete();
         return response()->json(null, 204);
     }
 }
