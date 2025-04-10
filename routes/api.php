@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('subscribers', SubscriberController::class);
     Route::apiResource('newsletters', NewsletterController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('campaigns', CampaignController::class);
 });
 
 
