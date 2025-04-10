@@ -45,7 +45,7 @@ Selon le cahier des charges, voici l'état d'avancement pour le premier livrable
 
 1.  **Cloner le repository :**
     ```bash
-    git clone [URL_DE_VOTRE_REPOSITORY_GITHUB] mailmaster-api
+    git clone https://github.com/Youcode-Classe-E-2024-2025/Belal-ALLALA-MailMaster.git mailmaster-api
     cd mailmaster-api
     ```
 
