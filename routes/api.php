@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SubscriberController;
+use App\Http\Controllers\Api\NewsletterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('subscribers', SubscriberController::class);
+Route::apiResource('newsletters', NewsletterController::class);
