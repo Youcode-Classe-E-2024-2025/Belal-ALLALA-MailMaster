@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SubscriberController;
 use App\Http\Controllers\Api\NewsletterController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('subscribers', SubscriberController::class);
     Route::apiResource('newsletters', NewsletterController::class);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+
+Route::post('/register', [AuthController::class, 'register']); 
+Route::post('/login', [AuthController::class, 'login']);
