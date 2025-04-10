@@ -10,10 +10,10 @@ Ce premier livrable (Jours 1-4) se concentre sur la mise en place de l'architect
 
 Selon le cahier des charges, voici l'état d'avancement pour le premier livrable :
 
-*   **✅ API de base fonctionnelle :** Oui, l'API de base est fonctionnelle avec les opérations CRUD pour les entités principales.
-*   **✅ CRUD principal et auth terminés :**  Le CRUD principal pour Newsletters, Abonnés et Campagnes est implémenté. L'authentification avec Laravel Sanctum est fonctionnelle, incluant l'enregistrement, la connexion et la déconnexion, ainsi que la gestion des rôles utilisateurs (admin/éditeur).
-*   **❌ Documentation partielle de l'API :**  La documentation de l'API avec Swagger n'est pas encore finalisée, mais l'installation et la configuration de Swagger sont en cours. *[Note: Vous pouvez mettre "En cours" si vous avez commencé à installer Swagger, ou "Planifiée" si vous prévoyez de le faire prochainement]*
-*   **✅ README de projet :** Ce fichier `README.md` est en cours de création et sera finalisé pour le premier livrable.
+*   ✅ **API de base fonctionnelle :** Oui, l'API de base est fonctionnelle avec les opérations CRUD pour les entités principales.
+*   ✅ **CRUD principal et auth terminés :**  Le CRUD principal pour Newsletters, Abonnés et Campagnes est implémenté. L'authentification avec Laravel Sanctum est fonctionnelle, incluant l'enregistrement, la connexion et la déconnexion, ainsi que la gestion des rôles utilisateurs (admin/éditeur).
+*   ✅ **Documentation partielle de l'API :**  La documentation de l'API avec Swagger est installée et partiellement configurée. Les endpoints principaux sont documentés avec des annotations Swagger de base.
+*   ✅ **README de projet :** Ce fichier `README.md` est créé et finalisé pour le premier livrable.
 
 ## Fonctionnalités Clés Implémentées (Premier Livrable)
 
@@ -36,8 +36,10 @@ Selon le cahier des charges, voici l'état d'avancement pour le premier livrable
 *   **Gestion des rôles utilisateurs (admin/éditeur) :**
     *   Colonne `role` ajoutée à la table `users` (enum 'admin', 'editor').
     *   Politiques d'autorisation (Policies) pour Newsletters et Campaigns, restreignant la suppression aux admins.
-*   **Documentation API (en cours) :**
-    *   Installation et configuration de Swagger (l5-swagger) en cours. *[Modifier si vous avez progressé sur ce point]*
+*   **Documentation API avec Swagger (OpenAPI) :**
+    *   Swagger (l5-swagger) installé et configuré.
+    *   Documentation Swagger UI accessible via `/api/documentation`.
+    *   Annotations Swagger de base ajoutées aux contrôleurs pour documenter les endpoints et les schémas.
 
 ## Installation et Configuration
 
@@ -74,7 +76,7 @@ Selon le cahier des charges, voici l'état d'avancement pour le premier livrable
 
 ## Points d'Accès API (Endpoints)
 
-Voici une liste des principaux points d'accès API implémentés dans ce premier livrable. *[Note: Complétez cette liste avec les endpoints réels de votre API]*
+Voici une liste des principaux points d'accès API implémentés dans ce premier livrable.
 
 *   **Authentification :**
     *   `POST /api/register` - Enregistrer un nouvel utilisateur
@@ -127,9 +129,8 @@ Pour le prochain livrable (Jours 5-8), les tâches principales seront :
 
 *   Implémentation des routes API avancées (envoi de campagne, suivi, etc.).
 *   Ajout de tests unitaires et fonctionnels (PHPUnit).
-*   Finalisation de la documentation Swagger de l'API.
+*   Finalisation de la documentation Swagger de l'API (ajout d'exemples, amélioration des descriptions, etc.).
 *   Création d'une interface frontend simple pour consommer l'API.
 *   Préparation de la soutenance et de la démonstration du projet.
 
 ---
-
