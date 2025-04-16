@@ -301,4 +301,43 @@ class CampaignController extends Controller
 
         return response()->json(['message' => 'Campaign sending started to ' . $subscribers->count() . ' subscribers.']);
     }
+
+    /**
+     * @OA\Get(
+     *      path="/api/campaigns/{campaign}/preview",
+     *      operationId="previewCampaign",
+     *      tags={"Campaigns"},
+     *      summary="Preview a campaign",
+     *      description="Returns the content of a campaign for preview.",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          name="campaign",
+     *          description="Campaign id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(@OA\Property(property="content", type="string", example="HTML content of the newsletter"))
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Campaign not found"))
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
+     */
+    public function preview(Campaign $campaign)
+    {
+        return response()->json(['content' => $campaign->newsletter->content]); 
+    }
 }
