@@ -243,4 +243,43 @@ class CampaignController extends Controller
         $campaign->delete();
         return response()->json(null, 204);
     }
+
+    /**
+     * @OA\Post(
+     *      path="/api/campaigns/{campaign}/send",
+     *      operationId="sendCampaign",
+     *      tags={"Campaigns"},
+     *      summary="Send a campaign",
+     *      description="Sends a specific campaign to subscribers.",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          name="campaign",
+     *          description="Campaign id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Campaign sending started"))
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Campaign not found"))
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))
+     *      )
+     *  )
+     */
+    public function send(Campaign $campaign)
+    {
+        return response()->json(['message' => 'Campaign sending started']);
+    }
 }
