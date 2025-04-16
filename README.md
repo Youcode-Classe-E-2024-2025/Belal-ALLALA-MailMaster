@@ -26,7 +26,7 @@ Suivez ces étapes pour installer et configurer l'API MailMaster :
 
 1.  **Cloner le repository :**
     ```bash
-    git clone [URL_DE_VOTRE_REPOSITORY_GITHUB] mailmaster-api
+    git clone https://github.com/Youcode-Classe-E-2024-2025/Belal-ALLALA-MailMaster.git mailmaster-api
     cd mailmaster-api
     ```
 
