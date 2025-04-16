@@ -280,6 +280,25 @@ class CampaignController extends Controller
      */
     public function send(Campaign $campaign)
     {
-        return response()->json(['message' => 'Campaign sending started']);
+        if ($campaign->status !== 'draft') {
+            return response()->json(['message' => 'Campaign must be in draft status to be sent.'], 400);
+        }
+
+        $subscribers = Subscriber::all(); 
+
+        $newsletterContent = $campaign->newsletter->content;
+
+        foreach ($subscribers as $subscriber) {
+            Mail::raw($newsletterContent, function ($message) use ($subscriber, $campaign) { 
+                $message->to($subscriber->email)
+                        ->subject($campaign->subject);
+            });
+        }
+
+        $campaign->status = 'pending'; 
+        $campaign->sent_at = now();
+        $campaign->save();
+
+        return response()->json(['message' => 'Campaign sending started to ' . $subscribers->count() . ' subscribers.']);
     }
 }
