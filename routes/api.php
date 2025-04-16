@@ -33,4 +33,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::post('/register', [AuthController::class, 'register']); 
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/track-open/{campaign}/{subscriber}', [CampaignController::class, 'trackOpen'])->name('track.open');
 

@@ -340,4 +340,52 @@ class CampaignController extends Controller
     {
         return response()->json(['content' => $campaign->newsletter->content]); 
     }
+
+    /**
+     * @OA\Get(
+     *      path="/api/track-open/{campaign}/{subscriber}",
+     *      operationId="trackOpen",
+     *      tags={"Campaigns"},
+     *      summary="Track email open",
+     *      description="Endpoint called when an email is opened (via tracking pixel).",
+     *      @OA\Parameter(
+     *          name="campaign",
+     *          description="Campaign id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="subscriber",
+     *          description="Subscriber id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Tracking pixel",
+     *          @OA\MediaType(
+     *              mediaType="image/gif" // Retourne un GIF pixel transparent
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found",
+     *          @OA\JsonContent(@OA\Property(property="message", type="string", example="Campaign or Subscriber not found"))
+     *      )
+     *  )
+     */
+    public function trackOpen(Campaign $campaign, Subscriber $subscriber)
+    {
+        $campaign->opened_count = ($campaign->opened_count ?? 0) + 1; 
+        $campaign->save();
+
+        return response(base64_decode('R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='))
+            ->header('Content-Type', 'image/gif');
+    }
 }
